@@ -4,9 +4,9 @@ const RightChevron = () => {
       <path
         d='M2 2.1499L7 7.1499L2 12.1499'
         stroke='white'
-        stroke-width='3'
-        stroke-linecap='round'
-        stroke-linejoin='round'
+        strokeWidth='3'
+        strokeLinecap='round'
+        strokeLinejoin='round'
       />
     </svg>
   )
