@@ -7,7 +7,7 @@ export default {
         calendar: {
           primary: '#F68C54',
           hover: '#FFEDD5',
-          dark: '612505',
+          dark: '#612505',
         },
       },
     },
