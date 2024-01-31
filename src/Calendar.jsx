@@ -2,7 +2,7 @@ import { useState } from 'react'
 import LeftChevron from './assets/LeftChevron'
 import RightChevron from './assets/RightChevron'
 
-const Calendar = ({ value, onChange: setSelectedDate }) => {
+const Calendar = ({ value, onChange: setSelectedDate, locale = 'id-ID' }) => {
   const selectedDate = new Date(value)
   const [calendarView, setCalendarView] = useState(selectedDate)
 
@@ -45,7 +45,7 @@ const Calendar = ({ value, onChange: setSelectedDate }) => {
   return (
     <div className='flex w-[500px] flex-col gap-4 rounded-2xl bg-white py-6 shadow-2xl'>
       <div className='flex items-center justify-between px-6'>
-        <h1 className='font-bold'>{`${calendarView.toLocaleDateString(undefined, { month: 'long', year: 'numeric' })}`}</h1>
+        <h1 className='text-lg font-bold'>{`${calendarView.toLocaleDateString(locale, { month: 'long', year: 'numeric' })}`}</h1>
 
         <div className='flex items-center overflow-hidden rounded-2xl bg-calendar-primary'>
           <div
