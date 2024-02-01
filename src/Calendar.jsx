@@ -1,9 +1,10 @@
+import { motion } from 'framer-motion'
 import { useState } from 'react'
 import LeftChevron from './assets/LeftChevron'
 import RightChevron from './assets/RightChevron'
 
-const Calendar = ({ value, onChange: setSelectedDate, locale = 'id-ID' }) => {
-  const selectedDate = new Date(value)
+const Calendar = ({ date, onChange: setSelectedDate, locale = 'id-ID' }) => {
+  const selectedDate = date ?? new Date()
   const [calendarView, setCalendarView] = useState(selectedDate)
 
   const displayYear = calendarView.getFullYear()
@@ -12,15 +13,15 @@ const Calendar = ({ value, onChange: setSelectedDate, locale = 'id-ID' }) => {
   const firstDateOfMonth = new Date(Date.UTC(displayYear, displayMonth, 1))
   const lastDateOfMonth = new Date(Date.UTC(displayYear, displayMonth + 1, 0))
 
-  const currentMonthDates = Array.from(
-    { length: lastDateOfMonth.getDate() },
-    (_, i) => new Date(Date.UTC(displayYear, displayMonth, i + 1)),
-  )
-
   const prevMonthWeekdays = Array.from(
     { length: firstDateOfMonth.getDay() },
     (_, i) => new Date(Date.UTC(displayYear, displayMonth, -i)),
   ).reverse()
+
+  const currentMonthDates = Array.from(
+    { length: lastDateOfMonth.getDate() },
+    (_, i) => new Date(Date.UTC(displayYear, displayMonth, i + 1)),
+  )
 
   const nextMonthWeekdays = Array.from(
     { length: 42 - prevMonthWeekdays.length - lastDateOfMonth.getDate() },
@@ -45,21 +46,21 @@ const Calendar = ({ value, onChange: setSelectedDate, locale = 'id-ID' }) => {
   return (
     <div className='flex w-[500px] flex-col gap-4 rounded-2xl bg-white py-6 shadow-2xl'>
       <div className='flex items-center justify-between px-6'>
-        <h1 className='text-lg font-bold'>{`${calendarView.toLocaleDateString(locale, { month: 'long', year: 'numeric' })}`}</h1>
+        <span className='text-lg font-bold'>{`${calendarView.toLocaleDateString(locale, { month: 'long', year: 'numeric' })}`}</span>
 
-        <div className='flex items-center overflow-hidden rounded-2xl bg-calendar-primary'>
-          <div
-            onClick={() => handleMonthChange('prev')}
-            className='flex h-12 w-12 items-center justify-center font-bold text-white'
-          >
-            <LeftChevron />
+        <div className='bg-calendar-primar flex items-center overflow-hidden rounded-2xl border border-gray-200'>
+          <div onClick={() => handleMonthChange('prev')} className='font-bold text-slate-900'>
+            <motion.button className='flex h-12 w-12 items-center justify-center' whileTap={{ scale: 0.7 }}>
+              <LeftChevron />
+            </motion.button>
           </div>
-          <div className='h-8 w-[2px] rounded-2xl bg-white'></div>
-          <div
-            onClick={() => handleMonthChange('next')}
-            className='flex h-12 w-12 items-center justify-center font-bold text-white'
-          >
-            <RightChevron />
+
+          <div className='h-8 w-[1px] rounded-2xl bg-gray-200'></div>
+
+          <div onClick={() => handleMonthChange('next')} className='font-bold text-slate-900'>
+            <motion.button className='flex h-12 w-12 items-center justify-center' whileTap={{ scale: 0.7 }}>
+              <RightChevron />
+            </motion.button>
           </div>
         </div>
       </div>
@@ -79,8 +80,8 @@ const Calendar = ({ value, onChange: setSelectedDate, locale = 'id-ID' }) => {
           <CalendarDateTile
             key={date}
             date={date}
+            selectedDate={selectedDate}
             onClick={() => handleDateChange(date)}
-            isActive={selectedDate.toISOString() === date.toISOString()}
             className='text-slate-300'
           ></CalendarDateTile>
         ))}
@@ -88,9 +89,9 @@ const Calendar = ({ value, onChange: setSelectedDate, locale = 'id-ID' }) => {
         {currentMonthDates.map((date) => (
           <CalendarDateTile
             key={date}
-            onClick={() => handleDateChange(date)}
             date={date}
-            isActive={selectedDate.toISOString() === date.toISOString()}
+            selectedDate={selectedDate}
+            onClick={() => handleDateChange(date)}
           ></CalendarDateTile>
         ))}
 
@@ -98,8 +99,8 @@ const Calendar = ({ value, onChange: setSelectedDate, locale = 'id-ID' }) => {
           <CalendarDateTile
             key={date}
             date={date}
+            selectedDate={selectedDate}
             onClick={() => handleDateChange(date)}
-            isActive={selectedDate.toISOString() === date.toISOString()}
             className='text-slate-300'
           ></CalendarDateTile>
         ))}
@@ -108,16 +109,18 @@ const Calendar = ({ value, onChange: setSelectedDate, locale = 'id-ID' }) => {
   )
 }
 
-const CalendarDateTile = ({ date, onClick, isActive, className }) => {
+const CalendarDateTile = ({ date, onClick, selectedDate, className }) => {
+  const isActive = selectedDate.toISOString() === date.toISOString()
+
   return (
     <div
       onClick={() => onClick(date)}
-      className=' h-[70px] w-[calc(100%/7)] border-gray-200 p-1 [&:nth-child(n+8)]:border-t'
+      className='h-[70px] w-[calc(100%/7)] cursor-pointer border-gray-200 p-1 [&:nth-child(n+8)]:border-t'
     >
       <span
-        className={`flex h-full w-full items-center justify-center rounded-2xl font-bold hover:bg-gray-200 ${isActive ? '!bg-calendar-hover !text-calendar-dark' : ''} ${className}`}
+        className={`flex h-full w-full items-center justify-center rounded-2xl font-bold hover:bg-gray-100 ${isActive ? '!bg-calendar-hover !text-calendar-dark' : ''} ${className}`}
       >
-        {new Date(date).getDate()}
+        {date.getDate()}
       </span>
     </div>
   )

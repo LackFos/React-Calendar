@@ -1,14 +1,57 @@
-import { motion } from 'framer-motion'
 import { useState } from 'react'
+import { motion } from 'framer-motion'
 import Calendar from './Calendar'
+import SelectSession from './SelectSession'
+
 function App() {
-  const [selectedDate, setSelectedDate] = useState(new Date(new Date().setUTCHours(0, 0, 0, 0)))
+  const [inputType, setInputType] = useState('calendar')
+  const [formData, setFormData] = useState({
+    date: null,
+    session: null,
+  })
+
+  const handleBackToCalendarInput = () => {
+    setInputType('calendar')
+  }
+
+  const handleFormDataChange = (identifier, value) => {
+    setFormData((prev) => ({
+      ...prev,
+      [identifier]: value,
+    }))
+  }
+
+  const handleSelectedDateChange = (value) => {
+    handleFormDataChange('date', value)
+    setInputType('session')
+  }
 
   return (
-    <div className='fixed flex h-full w-full flex-col items-center justify-center gap-10 '>
-      <Calendar value={selectedDate} onChange={(value) => setSelectedDate(value)} />
+    <div className='fixed flex h-full w-full flex-col items-center justify-center gap-10'>
+      <div className=''>
+        {inputType === 'calendar' && (
+          <Calendar date={formData.date} onChange={(value) => handleSelectedDateChange(value)} />
+        )}
+
+        {inputType === 'session' && (
+          <SelectSession
+            date={formData.date}
+            value={formData.session}
+            onBack={handleBackToCalendarInput}
+            onChange={(value) => handleFormDataChange('session', value)}
+          />
+        )}
+      </div>
+
       <h1>
-        Date : {new Date(selectedDate).toLocaleString(undefined, { day: '2-digit', month: 'long', year: 'numeric' })}
+        {formData.date
+          ? formData.date.toLocaleString('id-ID', {
+              weekday: 'long',
+              day: '2-digit',
+              month: 'long',
+              year: 'numeric',
+            })
+          : 'Tidak ada tanggal terpilih'}
       </h1>
     </div>
   )
