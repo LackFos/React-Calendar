@@ -28,7 +28,7 @@ function App() {
 
   return (
     <div className='fixed flex h-full w-full flex-col items-center justify-center gap-10'>
-      <div className=''>
+      <motion.div layout transition={{ layout: { duration: 0.2, type: 'spring' } }}>
         {inputType === 'calendar' && (
           <Calendar date={formData.date} onChange={(value) => handleSelectedDateChange(value)} />
         )}
@@ -41,7 +41,7 @@ function App() {
             onChange={(value) => handleFormDataChange('session', value)}
           />
         )}
-      </div>
+      </motion.div>
 
       <h1>
         {formData.date

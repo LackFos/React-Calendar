@@ -1,3 +1,4 @@
+import { motion } from 'framer-motion'
 import CalendarIcon from './assets/CalendarIcon'
 import LeftChevron from './assets/LeftChevron'
 
@@ -44,17 +45,23 @@ const SelectSession = ({ value, date, onChange, onBack, locale = 'id-ID' }) => {
           </span>
         </div>
 
-        <div className='flex h-[496px] flex-col gap-2 overflow-y-scroll px-4 font-bold'>
-          {sessions.map((session) => (
-            <div
+        <motion.ul
+          transition={{ staggerChildren: 0.5 }}
+          className='flex h-[496px] flex-col gap-2 overflow-y-scroll px-4 font-bold'
+        >
+          {sessions.map((session, index) => (
+            <motion.li
               key={session.time}
               onClick={() => handleSessionChange(session)}
-              className={`flex min-h-[64px] w-full cursor-pointer items-center justify-center rounded-2xl border hover:border-calendar-hover hover:bg-calendar-hover hover:text-calendar-primary ${session.user_id ? '!border-transparent !bg-slate-100 !text-slate-600' : 'border-gray-200'} ${session.time === value ? '!border-calendar-primary !bg-calendar-hover !text-calendar-primary' : ''}`}
+              initial={{ left: '-100%', opacity: 0 }}
+              animate={{ left: '0px', opacity: 1 }}
+              transition={{ delay: 0.1 * index }}
+              className={`relative flex min-h-[64px] w-full cursor-pointer items-center justify-center rounded-2xl border hover:border-calendar-hover hover:bg-calendar-hover hover:text-calendar-primary ${session.user_id ? '!border-transparent !bg-slate-100 !text-slate-600' : 'border-gray-200'} ${session.time === value ? '!border-calendar-primary !bg-calendar-hover !text-calendar-primary' : ''}`}
             >
               {session.time} WIB
-            </div>
+            </motion.li>
           ))}
-        </div>
+        </motion.ul>
       </div>
     </div>
   )
