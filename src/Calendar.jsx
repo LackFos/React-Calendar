@@ -4,9 +4,9 @@ import LeftChevron from './assets/LeftChevron'
 import RightChevron from './assets/RightChevron'
 
 const Calendar = ({ date, onChange: setSelectedDate, locale = 'id-ID' }) => {
-  const selectedDate = date ?? new Date()
-  const [calendarView, setCalendarView] = useState(selectedDate)
+  const selectedDate = date.start ?? new Date()
 
+  const [calendarView, setCalendarView] = useState(selectedDate)
   const displayYear = calendarView.getFullYear()
   const displayMonth = calendarView.getMonth()
 
@@ -110,7 +110,8 @@ const Calendar = ({ date, onChange: setSelectedDate, locale = 'id-ID' }) => {
 }
 
 const CalendarDateTile = ({ date, onClick, selectedDate, className }) => {
-  const isActive = selectedDate.toISOString() === date.toISOString()
+  const isActive =
+    selectedDate.toISOString() === date.toISOString() || selectedDate.toISOString() === date.toISOString()
 
   return (
     <div
