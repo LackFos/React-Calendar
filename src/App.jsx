@@ -7,28 +7,21 @@ function App() {
     end: null,
   })
 
-  const [selectedMode, setSelectedMode] = useState('start')
+  // const [selectedMode, setSelectedMode] = useState('start')
 
-  const handleSelectedDateChange = (identifier, value) => {
-    setSelectedDate((prev) => ({
-      ...prev,
-      [identifier]: value,
-    }))
-  }
-
-  const handleSelectedselectedDateChange = (value) => {
-    if (selectedMode === 'start') {
-      handleSelectedDateChange('start', value)
-      setSelectedMode('end')
-    } else if (selectedMode === 'end') {
-      handleSelectedDateChange('end', value)
-      setSelectedMode('start')
-    }
-  }
+  // const handleSelectedselectedDateChange = (value) => {
+  //   if (selectedMode === 'start') {
+  //     handleSelectedDateChange('start', value)
+  //     setSelectedMode('end')
+  //   } else if (selectedMode === 'end') {
+  //     handleSelectedDateChange('end', value)
+  //     setSelectedMode('start')
+  //   }
+  // }
 
   return (
     <div className='fixed flex h-full w-full flex-col items-center justify-center gap-10'>
-      <Calendar date={selectedDate} onChange={(value) => handleSelectedselectedDateChange(value)} />
+      <Calendar selectedDate={selectedDate} onChangeDate={setSelectedDate} />
 
       <div className='flex gap-10'>
         <p>
